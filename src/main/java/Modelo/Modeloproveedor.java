@@ -167,7 +167,7 @@ public class Modeloproveedor {
     }
 public void windowClosed(WindowEvent e) {
         ControladorPrincipal princi = new ControladorPrincipal();
-        princi.iniciarPrincipal();
+        princi.iniciarPrincipal(0);
    
     }
 }

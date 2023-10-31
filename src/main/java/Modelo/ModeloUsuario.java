@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JButton;
@@ -21,6 +22,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 public class ModeloUsuario {
+    
 
     Conexion cone = new Conexion();
     Connection cn = cone.iniciarConexion();
@@ -124,9 +126,15 @@ public class ModeloUsuario {
     public void setFec(Date fec) {
         this.fec = fec;
     }
-
-    public Map<String, Integer> llenarCombo(String sexo) {
-        String sql = "Select * from mostrar sexo";
+    
+    
+    public Map<String, Integer> llenarCombo(String valor) {
+        
+        Conexion cone = new Conexion();
+        Connection cn = cone.iniciarConexion();
+        
+        String sql = "Select * from mostrar sexo" + valor;
+        
         Map<String, Integer> llenar_combo = new HashMap<>();
         try {
             Statement st = cn.createStatement();
@@ -146,6 +154,7 @@ public class ModeloUsuario {
         Connection cn = cone.iniciarConexion();//instanciamos la conexion
         String sql = "call ins_usuario (?,?,?,?,?,?,?,?,?,?)";
         try {
+            
             PreparedStatement ps = cn.prepareStatement(sql);
             ps.setInt(1, getDoc());
             ps.setString(2, getNom());
@@ -183,7 +192,9 @@ public class ModeloUsuario {
             }
         }
     }
-     public void mostrarTablaUsuario(JTable tabla, String valor) {
+
+    public void mostrarTablaUsuario(JTable tabla, String valor, String nomPesta) {
+        
         Conexion conect = new Conexion();
         Connection co = conect.iniciarConexion();
 
@@ -196,12 +207,26 @@ public class ModeloUsuario {
         tabla.setDefaultRenderer(Object.class, new GestionCeldas());
         JButton editar = new JButton();
         JButton eliminar = new JButton();
+        JButton agregar = new JButton();
 
         editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editar.png")));
         eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png")));
-
+        agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar-usuario.png")));
+        
         String[] titulo = {"Documento", "Tipo de Documento", "Nombre", "Rol", "Telefono", "Correo", "Género", "Dirección", "Fecha de Nacimiento", "", ""};
-
+        int  total = titulo.length;
+        if(nomPesta.equals("usuario")) {
+            titulo= Arrays.copyOf(titulo,titulo.length+2);
+            titulo[titulo.length-2]= "EDITAR";
+            titulo[titulo.length-1]= "ELIMINAR";
+        }else{
+            titulo= Arrays.copyOf(titulo,titulo.length+1);
+            titulo[titulo.length-1]= "AGREGAR";
+        }
+        
+        
+        
+        
         DefaultTableModel tablaUsuario = new DefaultTableModel(null, titulo) {
             public boolean isCellEditable(int row, int column) {
 
@@ -234,13 +259,57 @@ public class ModeloUsuario {
         tabla.setModel(tablaUsuario);
         //Darle Tamaño a cada Columna
         int cantColum = tabla.getColumnCount();
-        int[] ancho = {100,180,100,150,100,160,100,180,150,30,30};
-        for(int i=0; i<cantColum; i++){
-            TableColumn columna=tabla.getColumnModel().getColumn(i);
+        int[] ancho = {100, 180, 100, 150, 100, 160, 100, 180, 150, 30, 30};
+        for (int i = 0; i < cantColum; i++) {
+            TableColumn columna = tabla.getColumnModel().getColumn(i);
             columna.setPreferredWidth(ancho[i]);
         }
         conect.cerrarConexion();
     }
 
-}
+    public void BuscarUsuario(int valor) {
+        Conexion cone = new Conexion();
+        Connection cn = cone.iniciarConexion();
+        String sql = "call_mostrarusuario(" + valor + ")";
 
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                setDoc(rs.getInt(1));
+                setTec(rs.getNString(2));
+                setNom(rs.getString(3));
+                setTec(rs.getString(4));
+                setCor(rs.getString(5));
+                setDir(rs.getString(6));
+                setFec(rs.getDate(7));
+                setSex(rs.getInt(8));
+                setRol(rs.getInt(9));
+                setLo(rs.getString(10));
+                setCl(rs.getString(11));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    public String obtenerSeleccion(Map<String, Integer> dato, int valor) {
+        for (Map.Entry<String, Integer> seleccion : dato.entrySet()) {
+            if (seleccion.getValue() == valor) {
+                return seleccion.getKey();
+            }
+        }
+        return null;
+    }
+
+    public void mostrarTablaUsuario() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public int getTip() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+}

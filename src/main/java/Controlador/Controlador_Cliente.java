@@ -23,7 +23,7 @@ public class Controlador_Cliente implements ActionListener {
         nue.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
                 ControladorPrincipal princi = new ControladorPrincipal();
-                princi.iniciarPrincipal();
+                princi.iniciarPrincipal(0);
             }
 
         });
