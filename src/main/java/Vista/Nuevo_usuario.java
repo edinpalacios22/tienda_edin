@@ -536,6 +536,14 @@ public class Nuevo_usuario extends javax.swing.JFrame {
     public void setjComboBox2(JComboBox<String> jComboBox2) {
         this.getTxtsexo = jComboBox2;
     }
+
+    public JLabel getLblnuevousuario() {
+        return lblnuevousuario;
+    }
+
+    public void setLblnuevousuario(JLabel lblnuevousuario) {
+        this.lblnuevousuario = lblnuevousuario;
+    }
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

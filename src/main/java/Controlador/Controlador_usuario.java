@@ -9,8 +9,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Date;
 import java.util.Map;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
 
 public class Controlador_usuario implements ActionListener {
 
@@ -19,9 +21,12 @@ public class Controlador_usuario implements ActionListener {
     ModeloUsuario usu = new ModeloUsuario();
 
     public Controlador_usuario() {
+        us.getLblguardar().addActionListener(this);
+        us.getjButton2().addActionListener(this);
         us.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         us.addWindowListener(new WindowAdapter() {
             public void windowClosed(WindowEvent e) {
+
                 ControladorPrincipal princi = new ControladorPrincipal();
                 princi.iniciarPrincipal(0);
             }
@@ -31,10 +36,11 @@ public class Controlador_usuario implements ActionListener {
 
     public void llenarcampos() {
         //   us.addWindowListener(l);
-        prin.setVisible(false);
+//        prin.setVisible(false);
         us.setLocationRelativeTo(null);
         us.setVisible(true);
-        //llenar sexo combobox sexo 
+
+//llenar sexo combobox sexo 
         us.getjComboBox1().addItem("seleccione");
         Map<String, Integer> dato = usu.llenarCombo("sexo");
         for (String sexo : dato.keySet()) {
@@ -45,6 +51,11 @@ public class Controlador_usuario implements ActionListener {
         Map<String, Integer> datos = usu.llenarCombo("rol");
         for (String rol : dato.keySet()) {
             us.getjComboBox2().addItem(rol);
+
+//            us.getTxtdocumento().addItem("Seleccione...");
+//        Map<String, Integer> datoT = usu.llenarCombo("tipodoc");
+//        for (String tipo : datoT.keySet()) {
+//            us.getJcTipo().addItem(tipo);
         }
     }
 
@@ -82,12 +93,20 @@ public class Controlador_usuario implements ActionListener {
                 usu.setCl(us.getLblclave().getText());
                 usu.setSex(sexo);
                 usu.setRol(Rol);
-
-                usu.mostrarTablaUsuario();
-                usu.Limpiar(us.getjButton1().getComponents());
+                usu.setLo(us.getTxtLogin().getText());
+                usu.setCl(contraseña);
+                if (us.getLblguardar().getText().equals("Guardar")) {
+                    usu.llenarnuevousuario();
+                    usu.Limpiar(us.getjButton1().getComponents());
+                }else{
+                    usu.actualizarUsuario();
+                    us.setVisible(false);
+                    us.dispose();
+                }
             }
         }
     }
+    
 
     void actualizarUsuario(int doc) {
         usu.BuscarUsuario(doc);
@@ -123,12 +142,31 @@ public class Controlador_usuario implements ActionListener {
             }
             String valorTipo = usu.obtenerSeleccion(datoT, usu.getTip());
             us.getjComboBox1().setSelectedItem(valorTipo);
-
-            us.getjButton1().setText("actualiza");
+            Border borde = BorderFactory.createTitledBorder(null, "Actualizar Usuario",
+                    javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION,
+                    new java.awt.Font("Verdana", 1, 18), new java.awt.Color(153, 0, 153));
+            us.getLblnuevousuario().setBorder(borde);
+            prin.setVisible(false);
+            us.setLocationRelativeTo(null);
+            us.getjButton1().setText("actualizar");
             us.setVisible(true);
-            
-        }
 
+        
+    }
     }
 
+//        void eliminarUsuario(int doc) {
+//        int resp = JOptionPane.showConfirmDialog(null, "¿Desea eliminar al usuario? \n" + doc,
+//                    "Eliminar Usuario", JOptionPane.YES_OPTION);
+//            if (resp == JOptionPane.YES_OPTION) {
+//                usu.setDoc(doc);
+//                usu.eliminarUsuario();
+//            }
+//
+//        }
+
+
 }
+
+
+

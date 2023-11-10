@@ -5,6 +5,7 @@
 package Vista;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -76,6 +77,62 @@ public class Principal extends javax.swing.JFrame {
 
     public void setBtnbuscar(JButton btnbuscar) {
         this.btnbuscar = btnbuscar;
+    }
+
+    public JButton getBtnimg() {
+        return btnimg;
+    }
+
+    public void setBtnimg(JButton btnimg) {
+        this.btnimg = btnimg;
+    }
+
+    public JButton getBtnguardar() {
+        return btnguardar;
+    }
+
+    public void setBtnguardar(JButton btnguardar) {
+        this.btnguardar = btnguardar;
+    }
+
+    public JTextField getTxtimg() {
+        return txtimg;
+    }
+
+    public void setTxtimg(JTextField txtimg) {
+        this.txtimg = txtimg;
+    }
+
+    public JTextField getTxtnombre() {
+        return txtnombre;
+    }
+
+    public void setTxtnombre(JTextField txtnombre) {
+        this.txtnombre = txtnombre;
+    }
+
+    public JTextField getTxtPanel1() {
+        return txtPanel1;
+    }
+
+    public void setTxtPanel1(JTextField txtPanel1) {
+        this.txtPanel1 = txtPanel1;
+    }
+
+    public JLabel getLblDescrip() {
+        return lblDescrip;
+    }
+
+    public void setLblDescrip(JLabel lblDescrip) {
+        this.lblDescrip = lblDescrip;
+    }
+
+    public JButton getjBtnproducto() {
+        return jBtnproducto;
+    }
+
+    public void setjBtnproducto(JButton jBtnproducto) {
+        this.jBtnproducto = jBtnproducto;
     }
 
 
@@ -171,10 +228,10 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 613, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 889, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,7 +278,7 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(jpclienteLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblNuevo)
-                .addContainerGap(1043, Short.MAX_VALUE))
+                .addContainerGap(1331, Short.MAX_VALUE))
         );
         jpclienteLayout.setVerticalGroup(
             jpclienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,7 +299,7 @@ public class Principal extends javax.swing.JFrame {
             jPproveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPproveedorLayout.createSequentialGroup()
                 .addComponent(jBproveedorp)
-                .addGap(0, 1030, Short.MAX_VALUE))
+                .addGap(0, 1318, Short.MAX_VALUE))
         );
         jPproveedorLayout.setVerticalGroup(
             jPproveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -333,7 +390,7 @@ public class Principal extends javax.swing.JFrame {
                                             .addComponent(txtcomprobante, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGap(16, 16, 16)
                             .addComponent(BTNGUARDAR))))
-                .addGap(139, 221, Short.MAX_VALUE))
+                .addGap(139, 509, Short.MAX_VALUE))
         );
         jPfacturaLayout.setVerticalGroup(
             jPfacturaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -376,7 +433,7 @@ public class Principal extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jBtnVentas)
-                .addGap(0, 1084, Short.MAX_VALUE))
+                .addGap(0, 1372, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -429,10 +486,9 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(2, 2, 2)
                         .addComponent(jScrollPane2))
                     .addGroup(jPproductoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPproductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPproductoLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(txtPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPproductoLayout.createSequentialGroup()
                                 .addGroup(jPproductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lblnom)
@@ -444,12 +500,10 @@ public class Principal extends javax.swing.JFrame {
                                 .addGroup(jPproductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPproductoLayout.createSequentialGroup()
                                         .addGap(18, 18, 18)
-                                        .addComponent(btnimg, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(btnimg, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPproductoLayout.createSequentialGroup()
                                         .addGap(83, 83, 83)
-                                        .addComponent(lblDescrip)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addComponent(lblDescrip)))
                                 .addGap(29, 29, 29)
                                 .addComponent(txtPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(28, 28, 28)

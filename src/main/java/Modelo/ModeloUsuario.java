@@ -12,6 +12,8 @@ import java.sql.Statement;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -22,12 +24,11 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 public class ModeloUsuario {
-    
 
     Conexion cone = new Conexion();
     Connection cn = cone.iniciarConexion();
 
-    private int doc, sex, rol;
+    private int doc, sex, rol, tip;
     private String nom, dir, tec, cor, lo, cl;
     private Date fec;
 
@@ -126,15 +127,22 @@ public class ModeloUsuario {
     public void setFec(Date fec) {
         this.fec = fec;
     }
-    
-    
+
+    public int getTip() {
+        return tip;
+    }
+
+    public void setTip(int tip) {
+        this.tip = tip;
+    }
+
     public Map<String, Integer> llenarCombo(String valor) {
-        
+
         Conexion cone = new Conexion();
         Connection cn = cone.iniciarConexion();
-        
+
         String sql = "Select * from mostrar sexo" + valor;
-        
+
         Map<String, Integer> llenar_combo = new HashMap<>();
         try {
             Statement st = cn.createStatement();
@@ -154,7 +162,7 @@ public class ModeloUsuario {
         Connection cn = cone.iniciarConexion();//instanciamos la conexion
         String sql = "call ins_usuario (?,?,?,?,?,?,?,?,?,?)";
         try {
-            
+
             PreparedStatement ps = cn.prepareStatement(sql);
             ps.setInt(1, getDoc());
             ps.setString(2, getNom());
@@ -170,7 +178,7 @@ public class ModeloUsuario {
             JOptionPane.showMessageDialog(null, "Registro almacenado");
             cn.close();
 
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al guardar", "Error", JOptionPane.ERROR_MESSAGE);
 
         }
@@ -194,7 +202,7 @@ public class ModeloUsuario {
     }
 
     public void mostrarTablaUsuario(JTable tabla, String valor, String nomPesta) {
-        
+
         Conexion conect = new Conexion();
         Connection co = conect.iniciarConexion();
 
@@ -205,28 +213,25 @@ public class ModeloUsuario {
 
         //Personalizar Celdas
         tabla.setDefaultRenderer(Object.class, new GestionCeldas());
-        JButton editar = new JButton();
-        JButton eliminar = new JButton();
-        JButton agregar = new JButton();
+        JButton editar = new JButton("Editar");
+        JButton eliminar = new JButton("Eliminar");
+        JButton agregar = new JButton("Agregar");
 
-        editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editar.png")));
+        editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lapiz.png")));
         eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png")));
         agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar-usuario.png")));
-        
-        String[] titulo = {"Documento", "Tipo de Documento", "Nombre", "Rol", "Telefono", "Correo", "Género", "Dirección", "Fecha de Nacimiento", "", ""};
-        int  total = titulo.length;
-        if(nomPesta.equals("usuario")) {
-            titulo= Arrays.copyOf(titulo,titulo.length+2);
-            titulo[titulo.length-2]= "EDITAR";
-            titulo[titulo.length-1]= "ELIMINAR";
-        }else{
-            titulo= Arrays.copyOf(titulo,titulo.length+1);
-            titulo[titulo.length-1]= "AGREGAR";
+
+        String[] titulo = {"Documento", "Tipo de Documento", "Nombre", "Rol", "Telefono", "Correo", "Género", "Dirección", "Fecha de Nacimiento"};
+        int total = titulo.length;
+        if (nomPesta.equals("usuario")) {
+            titulo = Arrays.copyOf(titulo, titulo.length + 2);
+            titulo[titulo.length - 2] = "";
+            titulo[titulo.length - 1] = "";
+        } else {
+            titulo = Arrays.copyOf(titulo, titulo.length + 1);
+            titulo[titulo.length - 1] = "";
         }
-        
-        
-        
-        
+
         DefaultTableModel tablaUsuario = new DefaultTableModel(null, titulo) {
             public boolean isCellEditable(int row, int column) {
 
@@ -237,19 +242,28 @@ public class ModeloUsuario {
 
         String sqlUsuario;
         if (valor.equals("")) {
-            sqlUsuario = "SELECT * FROM mostrar_usuario";
+            sqlUsuario = "SELECT * FROM mostrarusuario";
         } else {
             sqlUsuario = "call consultar_usuario('" + valor + "')";
         }
         try {
             String[] dato = new String[titulo.length];
-            Statement st = co.createStatement(); //Crea una consulta
+            Statement st = cn.createStatement(); //Crea una consulta
             ResultSet rs = st.executeQuery(sqlUsuario);
             while (rs.next()) {
-                for (int i = 0; i < titulo.length - 2; i++) {
+                for (int i = 0; i < total; i++) {
                     dato[i] = rs.getString(i + 1);
                 }
-                tablaUsuario.addRow(new Object[]{dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7], dato[8], editar, eliminar});
+                Object[] fila = {dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7], dato[8]};
+                if (nomPesta.equals("usuario")) {
+                    fila = Arrays.copyOf(fila, fila.length + 2);
+                    fila[fila.length - 2] = editar;
+                    fila[fila.length - 1] = eliminar;
+                } else {
+                    fila= Arrays.copyOf(fila, fila.length+1);
+                    fila[fila.length - 1] = agregar;
+                }
+                tablaUsuario.addRow(fila);
             }
             co.close();
 
@@ -296,6 +310,12 @@ public class ModeloUsuario {
         }
     }
 
+    /**
+     *
+     * @param dato
+     * @param valor
+     * @return
+     */
     public String obtenerSeleccion(Map<String, Integer> dato, int valor) {
         for (Map.Entry<String, Integer> seleccion : dato.entrySet()) {
             if (seleccion.getValue() == valor) {
@@ -305,11 +325,111 @@ public class ModeloUsuario {
         return null;
     }
 
-    public void mostrarTablaUsuario() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void actualizarUsuario() {
+        Conexion conect = new Conexion();
+        Connection cn = conect.iniciarConexion();
+        String sql = "call actualizar_Usuario(?,?,?,?,?,?,?,?,?)";
+
+        try {
+            PreparedStatement ps = cn.prepareStatement(sql);
+            ps.setInt(1, getDoc());
+            ps.setString(2, getNom());
+            ps.setInt(3, getRol());
+            ps.setString(4, getTec());
+            ps.setString(5, getCor());
+            ps.setInt(6, getSex());
+            ps.setString(7, getDir());
+            ps.setDate(8, getFec());
+            ps.setString(9, getCl());
+            ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Información Actualizada");
+            cn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        conect.cerrarConexion();
     }
 
-    public int getTip() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void buscarUsuario(int valor) {
+        Conexion cone = new Conexion();
+        Connection cn = cone.iniciarConexion();
+        String sql = "call usuario_bus(" + valor + ")";
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                setDoc(rs.getInt(1));
+                setTip(rs.getInt(2));
+                setNom(rs.getString(3));
+                setTec(rs.getString(4));
+                setCor(rs.getString(5));
+                setDir(rs.getString(6));
+                setFec(rs.getDate(7));
+                setSex(rs.getInt(8));
+                setRol(rs.getInt(9));
+                setLo(rs.getString(10));
+                setCl(rs.getString(11));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
+    public String obtenerSeleccion2(Map<String, Integer> dato, int valor) {
+        for (Map.Entry<String, Integer> seleccion : dato.entrySet()) {
+            if (seleccion.getValue() == valor) {
+                return seleccion.getKey();
+            }
+        }
+        return null;
+    }
+
+    public void actualizarUsuario2() {
+        Conexion con = new Conexion();
+        Connection cn = con.iniciarConexion();
+
+        String actUsuario = "call usuario_act(?,?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement ps = cn.prepareStatement(actUsuario);
+            ps.setInt(1, getDoc());
+            ps.setString(2, getNom());
+            ps.setString(3, getTec());
+            ps.setString(4, getCor());
+            ps.setString(5, getDir());
+            ps.setDate(6, getFec());
+            ps.setInt(7, getSex());
+            ps.setInt(8, getRol());
+            ps.setString(9, getCl());
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Registro Almacenado");
+            cn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void eliminarUsuario() {
+        Conexion con = new Conexion();
+        Connection cn = con.iniciarConexion();
+
+        String eliUsuario = "Call usuario_elim(?)";
+        try {
+            PreparedStatement ps = cn.prepareStatement(eliUsuario);
+            ps.setInt(1, getDoc());
+            ps.executeUpdate();
+            Icon eliminar = new ImageIcon(getClass().getResource("/img/eliminar.png"));
+            JOptionPane.showMessageDialog(null, "Registro Eliminado", "Eliminar Usuario", JOptionPane.PLAIN_MESSAGE, (Icon) eliminar);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+   
+
 }
+
+
