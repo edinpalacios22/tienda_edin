@@ -125,9 +125,9 @@ public class Controlador_usuario implements ActionListener {
         Map<String, Integer> dato = usu.llenarCombo("sexo");
         for (String sexo : dato.keySet()) {
             us.getjComboBox1().addItem(sexo);
-
-            String valoSexo = usu.obtenerSeleccion(dato, usu.getSex());
-            us.getjComboBox1().setSelectedItem(valoSexo);
+        }
+            String valorSexo = usu.obtenerSeleccion(dato, usu.getSex());
+            us.getjComboBox1().setSelectedItem(valorSexo);
 
             Map<String, Integer> datos = usu.llenarCombo("Rol");
             for (String Rol : dato.keySet()) {
@@ -153,17 +153,17 @@ public class Controlador_usuario implements ActionListener {
 
         
     }
-    }
+    
 
-//        void eliminarUsuario(int doc) {
-//        int resp = JOptionPane.showConfirmDialog(null, "¿Desea eliminar al usuario? \n" + doc,
-//                    "Eliminar Usuario", JOptionPane.YES_OPTION);
-//            if (resp == JOptionPane.YES_OPTION) {
-//                usu.setDoc(doc);
-//                usu.eliminarUsuario();
-//            }
-//
-//        }
+        void eliminarUsuario(int doc) {
+        int resp = JOptionPane.showConfirmDialog(null, "¿Desea eliminar al usuario? \n" + doc,
+                    "Eliminar Usuario", JOptionPane.YES_OPTION);
+            if (resp == JOptionPane.YES_OPTION) {
+                usu.setDoc(doc);
+                usu.eliminarUsuario();
+            }
+
+        }
 
 
 }

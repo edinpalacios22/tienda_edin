@@ -221,7 +221,7 @@ public class ModeloUsuario {
         eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png")));
         agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar-usuario.png")));
 
-        String[] titulo = {"Documento", "Tipo de Documento", "Nombre", "Rol", "Telefono", "Correo", "Género", "Dirección", "Fecha de Nacimiento"};
+        String[] titulo = {"Documento", "Tipo de Documento","Rol", "Genero", "Nombre", "Telefono", "Correo","Condicion", "Fecha de Nacimiento"};
         int total = titulo.length;
         if (nomPesta.equals("usuario")) {
             titulo = Arrays.copyOf(titulo, titulo.length + 2);
@@ -403,6 +403,194 @@ public class ModeloUsuario {
             ps.setDate(6, getFec());
             ps.setInt(7, getSex());
             ps.setInt(8, getRol());
+            ps.setString(9, getCl());
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Registro Almacenado");
+            cn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null,"error al guardar","error",JOptionPane.ERROR_MESSAGE);
+        } finally {
+            con.cerrarConexion();
+        }
+    }
+    
+    public void limpiar(Component[] panel) {
+        for (Object control : panel) {
+            if (control instanceof JTextField) {
+                ((JTextField) control).setText("");
+            }
+            if (control instanceof JComboBox) {
+                ((JComboBox) control).setSelectedItem("Seleccione...");
+            }
+            if (control instanceof JDateChooser) {
+                ((JDateChooser) control).setDate(null);
+            }
+        }
+    }
+     public void agregarBoton(String nomPesta, String[]objeto, Object valor,Object valor2,Object valor3){
+       
+        if(nomPesta.equals("usuario")){
+            System.out.println(nomPesta);
+            
+            objeto= Arrays.copyOf(objeto,objeto.length+2);
+            
+            objeto[objeto.length-2]=String.valueOf(valor);
+            objeto[objeto.length-1]=String.valueOf(valor2);
+            System.out.println(objeto.length);
+            
+        }else{
+            objeto= Arrays.copyOf(objeto,objeto.length+1);
+            objeto[objeto.length-1]=String.valueOf(valor3);
+        }       
+        
+    }
+
+    public void mostrarTablaUsuario2(JTable tabla, String valor, String nomPesta) {
+        Conexion conect = new Conexion();
+        Connection cn = conect.iniciarConexion();
+
+        //Personalizar Encabezado
+        JTableHeader encabezado = tabla.getTableHeader();
+        encabezado.setDefaultRenderer(new GestionEncabezado());
+        tabla.setTableHeader(encabezado);
+
+        tabla.setDefaultRenderer(Object.class, new GestionCeldas());
+
+        JButton editar = new JButton();
+        JButton eliminar = new JButton();
+        JButton agregar = new JButton();
+
+        editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lapiz.png")));
+        eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png")));
+        agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar_usuario.png")));
+        
+        String[] titulo = {"Tipo de Documento", "Documento", "Nombre", "Dirección", "Celular", "Género", "Correo", "Fecha de Nacimiento", "Rol"};
+        int total = titulo.length;//Para gardar el tamaño del cector titulo original
+//        agregarBoton(nomPesta, titulo, "", "", "");
+        if(nomPesta.equals("usuario")){
+            
+            titulo= Arrays.copyOf(titulo,titulo.length+2);
+            titulo[titulo.length-2]="";
+            titulo[titulo.length-1]="";
+            
+        }else{
+            titulo= Arrays.copyOf(titulo,titulo.length+1);
+            titulo[titulo.length-1]="";
+        }
+
+        DefaultTableModel tablaUsuario = new DefaultTableModel(null, titulo) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        String sqlUsuario;
+        if (valor.equals("")) {
+            sqlUsuario = " SELECT * FROM mostrar_usuario ";
+        } else {
+            sqlUsuario = "call usuario_cons('" + valor + "')";
+        }
+        try {
+            String[] dato = new String[titulo.length];
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sqlUsuario);
+            while (rs.next()) {
+                for (int i = 0; i < total; i++) {
+                    dato[i] = rs.getString(i + 1);
+                }
+                Object[] fila={dato[0], dato[1], dato[2], dato[6], dato[3], dato[4], dato[5], dato[7], dato[8]};
+                if(nomPesta.equals("usuario")){
+                    fila= Arrays.copyOf(fila, fila.length+2);
+                    fila[fila.length-2]=editar;
+                    fila[fila.length-1]=eliminar;
+                }else{
+                    fila= Arrays.copyOf(fila, fila.length+1);
+                    fila[fila.length-1]=agregar;
+                }
+                tablaUsuario.addRow(fila);
+            }
+            cn.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        tabla.setModel(tablaUsuario);
+        //Darle tamaño a cada columna
+        int numColumnas = tabla.getColumnCount();
+        int[] tamanos = {150, 100, 180, 150, 100, 100, 200, 150,100};
+
+        if (nomPesta.equals("usuario")) {
+            tamanos = Arrays.copyOf(tamanos, tamanos.length + 2);
+            tamanos[tamanos.length - 2] = 20;
+            tamanos[tamanos.length - 1] = 20;
+        } else {
+            tamanos = Arrays.copyOf(tamanos, tamanos.length + 1);
+            tamanos[tamanos.length - 1] = 20;
+        }
+        for (int i = 0; i < numColumnas; i++) {
+            TableColumn columna = tabla.getColumnModel().getColumn(i);
+            columna.setPreferredWidth(tamanos[i]);
+        }
+        for (int i = 0; i < numColumnas; i++) {
+            TableColumn columna = tabla.getColumnModel().getColumn(i);
+            columna.setPreferredWidth(tamanos[i]);
+
+        }
+        conect.cerrarConexion();
+
+    }
+
+    public void buscarUsuario2(int valor) {
+        Conexion cone = new Conexion();
+        Connection cn = cone.iniciarConexion();
+        String sql = "call usuario_bus(" + valor + ")";
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                setDoc(rs.getInt(1));
+                setTip(rs.getInt(2));
+                setNom(rs.getString(3));
+                setTec(rs.getString(4));
+                setCor(rs.getString(5));
+                setDir(rs.getString(6));
+                setFec(rs.getDate(7));
+                setSex(rs.getInt(8));
+                setRol(rs.getInt(9));
+                setLo(rs.getString(10));
+                setCl(rs.getString(11));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String obtenerSeleccion3(Map<String, Integer> dato, int valor) {
+        for (Map.Entry<String, Integer> seleccion : dato.entrySet()) {
+            if (seleccion.getValue() == valor) {
+                return seleccion.getKey();
+            }
+        }
+        return null;
+    }
+    public void actualizarUsuario3(){
+        Conexion con = new Conexion();
+        Connection cn = con.iniciarConexion();
+        
+        String actUsuario= "call usuario_act(?,?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement ps= cn.prepareStatement(actUsuario);
+            ps.setInt(1, getDoc());            
+            ps.setString(2, getNom());
+            ps.setString(3, getTec());
+            ps.setString(4, getCor());
+            ps.setString(5, getDir());
+            ps.setDate(6, getFec());
+            ps.setInt(7, getSex());
+            ps.setInt(8, getRol());           
             ps.setString(9, getCl());
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Registro Almacenado");

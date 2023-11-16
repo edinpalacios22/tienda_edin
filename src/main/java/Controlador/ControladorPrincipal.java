@@ -2,6 +2,7 @@ package Controlador;
 
 // import Modelo.ModeloUsuario;
 import Modelo.ModeloUsuario;
+import Modelo.Modelocliente;
 import Modelo.modelo_producto;
 import Vista.Nuevo_Cliente;
 import Vista.Nuevo_usuario;
@@ -35,16 +36,24 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
     Principal prin = new Principal();
     Nuevo_usuario us = new Nuevo_usuario();
     modelo_producto modpro = new modelo_producto();
+    Modelocliente modclien = new  Modelocliente();
 
     public ControladorPrincipal() {
         prin.getLblnuevo().addActionListener(this);
         prin.getLblNuevo().addActionListener(this);
         prin.getjBproveedorp().addActionListener(this);
+        prin.getBtnimg().addActionListener(this);
+        prin.getBtnguardar().addActionListener(this);
+        prin.getLblNuevo2().addActionListener(this);
+        
+        prin.getJdprincipal().addChangeListener(this);
+        
+        prin.getTXTbuscar().getDocument().addDocumentListener(this);
         
         us.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         nue.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         nuev.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        prin.getJdprincipal().addChangeListener(this);
+//        prin.getJdprincipal().addChangeListener(this);
     }
 
     public void iniciarPrincipal(int valor) {
@@ -103,8 +112,7 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
 
     public void gestionUsuario() {
          modusu.mostrarTablaUsuario(prin.getJtusua(), "", "usuario");
-
-        ModeloUsuario modUsu = new ModeloUsuario();
+           ModeloUsuario modUsu = new ModeloUsuario();
         prin.getTXTbuscar().addMouseListener(new MouseAdapter() {
 //            public void MouseClickd(MouseAdapter e) {                
             @Override
@@ -128,7 +136,14 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
 
             }
         });
-    }
+    
+    }    
+    
+    public void gestioncliente() {
+        modclien.mostrarTablaCliente(prin.getJpanelcliente(), "", "cliente");
+    }     
+
+      
 // @Override
     public void actionPerformed1 (ActionEvent e) {
         if (e.getSource().equals(prin.getLblnuevo())) {
@@ -184,6 +199,13 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
     public void stateChanged(ChangeEvent e) {
         int seleccion = prin.getJdprincipal().getSelectedIndex();
         if (seleccion == 1) {
+            
+            
+        if (seleccion == 1) {
+            gestioncliente();
+        }
+
+       
             ModeloUsuario modUsu = new ModeloUsuario();
             modUsu.mostrarTablaUsuario(prin.getJtusua(), "", "usuario");
         }
@@ -192,7 +214,9 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
             public void MouseClickd(MouseAdapter e) {
                 prin.getTXTbuscar().setText("color BLACK");
             }
-        });
+               });
+        
+        
 
         prin.getJtusua().addMouseListener(new MouseAdapter() {
             @Override
@@ -212,11 +236,13 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
     @Override
     public void insertUpdate(DocumentEvent e) {
         modusu.mostrarTablaUsuario(prin.getJtusua(), prin.getTXTbuscar().getText(), "usuario");
+        modclien.mostrarTablaCliente(prin.getJpanelcliente(), "", "cliente");
     }
 
     @Override
     public void removeUpdate(DocumentEvent e) {
         modusu.mostrarTablaUsuario(prin.getJtusua(), prin.getTXTbuscar().getText(), "usuario");
+        
     }
 
     @Override

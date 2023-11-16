@@ -10,9 +10,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 
 public class Modelocliente {
 
@@ -134,11 +140,92 @@ public class Modelocliente {
         }
         return llenar_combo;
     }
+    
+    
+    public void mostrarTablaCliente(JTable tabla, String valor, String nomPesta) {
 
-    public void llenarnuevousuario() {
+        Conexion conect = new Conexion();
+        Connection co = conect.iniciarConexion();
+
+        //Personalizar Emcabezado
+        JTableHeader encabeza = tabla.getTableHeader();
+        encabeza.setDefaultRenderer(new Gestion_Encabezado());
+        tabla.setTableHeader(encabeza);
+
+        //Personalizar Celdas
+        tabla.setDefaultRenderer(Object.class, new GestionCeldas());
+        JButton editar = new JButton("Editar");
+        JButton eliminar = new JButton("Eliminar");
+        JButton agregar = new JButton("Agregar");
+
+        editar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lapiz.png")));
+        eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png")));
+        agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar-usuario.png")));
+
+        String[] titulo = {"Documento", "Idsexo","Nombre", "Telefono", "Correo", "Direccion","condicion","Fecha de Nacimiento"};
+        int total = titulo.length;
+        if (nomPesta.equals("Cliente")) {
+            titulo = Arrays.copyOf(titulo, titulo.length + 2);
+            titulo[titulo.length - 2] = "";
+            titulo[titulo.length - 1] = "";
+        } else {
+            titulo = Arrays.copyOf(titulo, titulo.length + 1);
+            titulo[titulo.length - 1] = "";
+        }
+
+        DefaultTableModel tablaCliente = new DefaultTableModel(null, titulo) {
+            public boolean isCellEditable(int row, int column) {
+
+                return false;
+
+            }
+        };
+
+        String sqlcliente;
+        if (valor.equals("")) {
+            sqlcliente = "SELECT * FROM mostrar_cliente";
+        } else {
+            sqlcliente = "call consultar_cliente('" + valor + "')";
+        }
+        try {
+            String[] dato = new String[titulo.length];
+            Statement st = cn.createStatement(); //Crea una consulta
+            ResultSet rs = st.executeQuery(sqlcliente);
+            while (rs.next()) {
+                for (int i = 0; i < total; i++) {
+                    dato[i] = rs.getString(i + 1);
+                }
+                Object[] fila = {dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7],editar,eliminar};
+                if (nomPesta.equals("cliente")) {
+                    fila = Arrays.copyOf(fila, fila.length + 2);
+                    fila[fila.length - 2] = editar;
+                    fila[fila.length - 1] = eliminar;
+                } else {
+                    fila= Arrays.copyOf(fila, fila.length+1);
+                    fila[fila.length - 1] = agregar;
+                }
+                tablaCliente.addRow(fila);
+            }
+            co.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        tabla.setModel(tablaCliente);
+        //Darle Tamaño a cada Columna
+        int cantColum = tabla.getColumnCount();
+        int[] ancho = {100, 180, 100, 150, 100, 160, 100, 150,30,30};
+        for (int i = 0; i < cantColum; i++) {
+            TableColumn columna = tabla.getColumnModel().getColumn(i);
+            columna.setPreferredWidth(ancho[i]);
+        }
+        conect.cerrarConexion();
+    }
+
+    public void llenarnuevoCliente() {
         Conexion cone = new Conexion();
         Connection cn = cone.iniciarConexion();//instanciamos la conexion
-        String sql = "call ins_usuario (?,?,?,?,?,?,?,)";
+        String sql = "call ins_cliente (?,?,?,?,?,?,?,)";
         try {
             PreparedStatement ps = cn.prepareStatement(sql);
             ps.setInt(1, getDoc());
@@ -148,7 +235,7 @@ public class Modelocliente {
             ps.setString(5, getDir());
             ps.setInt(6, getSex());
             ps.executeUpdate();
-            JOptionPane.showConfirmDialog(null, "registro finalisado");
+            JOptionPane.showConfirmDialog(null, "registro finalizado");
             cn.close();
 
         } catch (SQLException ex) {

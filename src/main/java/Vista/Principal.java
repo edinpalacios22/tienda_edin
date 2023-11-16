@@ -6,6 +6,7 @@ package Vista;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -32,11 +33,11 @@ public class Principal extends javax.swing.JFrame {
     }
 
     public JButton getLblNuevo() {
-        return lblNuevo;
+        return lblNuevo2;
     }
 
     public void setLblNuevo(JButton lblNuevo) {
-        this.lblNuevo = lblNuevo;
+        this.lblNuevo2 = lblNuevo;
     }
 
     public JButton getjBproveedorp() {
@@ -135,6 +136,46 @@ public class Principal extends javax.swing.JFrame {
         this.jBtnproducto = jBtnproducto;
     }
 
+    public JTextField getTxtbuscarPro() {
+        return txtbuscarPro;
+    }
+
+    public void setTxtbuscarPro(JTextField txtbuscarPro) {
+        this.txtbuscarPro = txtbuscarPro;
+    }
+
+    public JTable getJpanelcliente() {
+        return jpanelcliente;
+    }
+
+    public void setJpanelcliente(JTable jpanelcliente) {
+        this.jpanelcliente = jpanelcliente;
+    }
+
+    public JTable getJpanelproveedor() {
+        return jpanelproveedor;
+    }
+
+    public void setJpanelproveedor(JTable jpanelproveedor) {
+        this.jpanelproveedor = jpanelproveedor;
+    }
+
+    public JPanel getJpcliente() {
+        return jpcliente;
+    }
+
+    public void setJpcliente(JPanel jpcliente) {
+        this.jpcliente = jpcliente;
+    }
+
+    public JButton getLblNuevo2() {
+        return lblNuevo2;
+    }
+
+    public void setLblNuevo2(JButton lblNuevo2) {
+        this.lblNuevo2 = lblNuevo2;
+    }
+
 
 
     /**
@@ -156,9 +197,13 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jtusua = new javax.swing.JTable();
         jpcliente = new javax.swing.JPanel();
-        lblNuevo = new javax.swing.JButton();
+        lblNuevo2 = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jpanelcliente = new javax.swing.JTable();
         jPproveedor = new javax.swing.JPanel();
         jBproveedorp = new javax.swing.JButton();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jpanelproveedor = new javax.swing.JTable();
         jPfactura = new javax.swing.JPanel();
         jBtnfactura = new javax.swing.JButton();
         lbltitulo = new javax.swing.JLabel();
@@ -178,6 +223,8 @@ public class Principal extends javax.swing.JFrame {
         btnlupa = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jBtnVentas = new javax.swing.JButton();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jpanelventa = new javax.swing.JTable();
         jPproducto = new javax.swing.JPanel();
         jBtnproducto = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -189,7 +236,7 @@ public class Principal extends javax.swing.JFrame {
         btnimg = new javax.swing.JButton();
         lblDescrip = new javax.swing.JLabel();
         btnguardar = new javax.swing.JButton();
-        txtPanel2 = new javax.swing.JTextField();
+        txtbuscarPro = new javax.swing.JTextField();
         txtPanel1 = new javax.swing.JTextField();
         lbltienda = new javax.swing.JLabel();
 
@@ -268,8 +315,21 @@ public class Principal extends javax.swing.JFrame {
 
         jdprincipal.addTab("Usuario", jpUsuario);
 
-        lblNuevo.setIcon(new javax.swing.ImageIcon("C:\\Users\\SENA\\Documents\\NetBeansProjects\\Tienda_Com\\src\\main\\resources\\img\\nuevo_usuario.png")); // NOI18N
-        lblNuevo.setText("Nuevo cliente");
+        lblNuevo2.setIcon(new javax.swing.ImageIcon("C:\\Users\\SENA\\Documents\\NetBeansProjects\\Tienda_Com\\src\\main\\resources\\img\\nuevo_usuario.png")); // NOI18N
+        lblNuevo2.setText("Nuevo cliente");
+
+        jpanelcliente.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane5.setViewportView(jpanelcliente);
 
         javax.swing.GroupLayout jpclienteLayout = new javax.swing.GroupLayout(jpcliente);
         jpcliente.setLayout(jpclienteLayout);
@@ -277,15 +337,19 @@ public class Principal extends javax.swing.JFrame {
             jpclienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpclienteLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblNuevo)
-                .addContainerGap(1331, Short.MAX_VALUE))
+                .addGroup(jpclienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblNuevo2)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 882, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(572, Short.MAX_VALUE))
         );
         jpclienteLayout.setVerticalGroup(
             jpclienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpclienteLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(lblNuevo)
-                .addContainerGap(657, Short.MAX_VALUE))
+                .addComponent(lblNuevo2)
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(494, Short.MAX_VALUE))
         );
 
         jdprincipal.addTab("Cliente", jpcliente);
@@ -293,20 +357,37 @@ public class Principal extends javax.swing.JFrame {
         jBproveedorp.setIcon(new javax.swing.ImageIcon("C:\\Users\\SENA\\Documents\\NetBeansProjects\\Tienda_Com\\src\\main\\resources\\img\\nuevo_usuario.png")); // NOI18N
         jBproveedorp.setText("Nuevo proveedor");
 
+        jpanelproveedor.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane6.setViewportView(jpanelproveedor);
+
         javax.swing.GroupLayout jPproveedorLayout = new javax.swing.GroupLayout(jPproveedor);
         jPproveedor.setLayout(jPproveedorLayout);
         jPproveedorLayout.setHorizontalGroup(
             jPproveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPproveedorLayout.createSequentialGroup()
-                .addComponent(jBproveedorp)
-                .addGap(0, 1318, Short.MAX_VALUE))
+                .addGroup(jPproveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jBproveedorp)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 882, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 578, Short.MAX_VALUE))
         );
         jPproveedorLayout.setVerticalGroup(
             jPproveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPproveedorLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jBproveedorp)
-                .addContainerGap(658, Short.MAX_VALUE))
+                .addGap(38, 38, 38)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(486, Short.MAX_VALUE))
         );
 
         jdprincipal.addTab("proveedor", jPproveedor);
@@ -427,20 +508,37 @@ public class Principal extends javax.swing.JFrame {
         jBtnVentas.setIcon(new javax.swing.ImageIcon("C:\\Users\\SENA\\Documents\\NetBeansProjects\\Tienda_Com\\src\\main\\resources\\img\\nuevo_usuario.png")); // NOI18N
         jBtnVentas.setText("Nuevo ");
 
+        jpanelventa.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane7.setViewportView(jpanelventa);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jBtnVentas)
-                .addGap(0, 1372, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jBtnVentas)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 882, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 578, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jBtnVentas)
-                .addContainerGap(658, Short.MAX_VALUE))
+                .addGap(55, 55, 55)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(469, Short.MAX_VALUE))
         );
 
         jdprincipal.addTab("Ventas", jPanel2);
@@ -488,7 +586,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPproductoLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPproductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtbuscarPro, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPproductoLayout.createSequentialGroup()
                                 .addGroup(jPproductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lblnom)
@@ -531,7 +629,7 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(txtPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnguardar))
                 .addGap(18, 18, 18)
-                .addComponent(txtPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtbuscarPro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(239, Short.MAX_VALUE))
@@ -591,16 +689,22 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JComboBox<String> jcbxpago;
     private javax.swing.JTabbedPane jdprincipal;
     private javax.swing.JPanel jpUsuario;
+    private javax.swing.JTable jpanelcliente;
+    private javax.swing.JTable jpanelproveedor;
+    private javax.swing.JTable jpanelventa;
     private javax.swing.JPanel jpcliente;
     private javax.swing.JTable jtusua;
     private javax.swing.JTable jtusua1;
     private javax.swing.JLabel lblDescrip;
-    private javax.swing.JButton lblNuevo;
+    private javax.swing.JButton lblNuevo2;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JLabel lblcomprobante;
     private javax.swing.JLabel lblimagen;
@@ -611,8 +715,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel lbltienda;
     private javax.swing.JLabel lbltitulo;
     private javax.swing.JTextField txtPanel1;
-    private javax.swing.JTextField txtPanel2;
     private javax.swing.JTextField txtVacio;
+    private javax.swing.JTextField txtbuscarPro;
     private javax.swing.JTextField txtcomprobante;
     private javax.swing.JTextField txtimg;
     private javax.swing.JTextField txtnombre;
