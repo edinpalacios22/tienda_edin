@@ -174,6 +174,7 @@ CREATE TABLE `factura` (
 
 LOCK TABLES `factura` WRITE;
 /*!40000 ALTER TABLE `factura` DISABLE KEYS */;
+INSERT INTO `factura` VALUES (234,'2012-04-05',123,222,'efectivo',0.12,24.76);
 /*!40000 ALTER TABLE `factura` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -210,6 +211,41 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `mostrar_factura`
+--
+
+DROP TABLE IF EXISTS `mostrar_factura`;
+/*!50001 DROP VIEW IF EXISTS `mostrar_factura`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `mostrar_factura` AS SELECT 
+ 1 AS `idfactura`,
+ 1 AS `fecha`,
+ 1 AS `idCliente`,
+ 1 AS `idUsuario`,
+ 1 AS `tipoPago`,
+ 1 AS `impuestos`,
+ 1 AS `total_factura`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `mostrar_producto`
+--
+
+DROP TABLE IF EXISTS `mostrar_producto`;
+/*!50001 DROP VIEW IF EXISTS `mostrar_producto`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `mostrar_producto` AS SELECT 
+ 1 AS `idProducto`,
+ 1 AS `nombre`,
+ 1 AS `descripcion`,
+ 1 AS `cantidad`,
+ 1 AS `imagen`,
+ 1 AS `precio`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `mostrar_proveedor`
 --
 
@@ -222,7 +258,7 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `idsexo`,
  1 AS `nit`,
  1 AS `nombre`,
- 1 AS `dirreccion`,
+ 1 AS `direccion`,
  1 AS `telefono`,
  1 AS `correo`,
  1 AS `tipo_persona`,
@@ -256,6 +292,22 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `mostrar_ventas`
+--
+
+DROP TABLE IF EXISTS `mostrar_ventas`;
+/*!50001 DROP VIEW IF EXISTS `mostrar_ventas`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `mostrar_ventas` AS SELECT 
+ 1 AS `idVentas`,
+ 1 AS `Tipodepago`,
+ 1 AS `Nombredelproducto`,
+ 1 AS `Descripiciondelproducto`,
+ 1 AS `DocumentodelCliente`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `mostrarusuario`
 --
 
@@ -265,6 +317,7 @@ SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `mostrarusuario` AS SELECT 
  1 AS `idusuario`,
+ 1 AS `Tipo_de_Documento`,
  1 AS `cargo`,
  1 AS `sexo`,
  1 AS `nombre`,
@@ -286,7 +339,7 @@ CREATE TABLE `producto` (
   `nombre` varchar(45) NOT NULL,
   `descripcion` varchar(250) NOT NULL,
   `cantidad` int NOT NULL,
-  `imagenen` varchar(45) DEFAULT NULL,
+  `imagen` longblob,
   `precio` float NOT NULL,
   `condicion` tinyint NOT NULL,
   PRIMARY KEY (`idProducto`)
@@ -299,7 +352,7 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
-INSERT INTO `producto` VALUES (312,'computador','buen_estado',5000,'hd',2,1),(313,'iphone','segunda_mano',1,'reg',200,0),(314,'telefono','bueno',5005,'buen',600.6,1),(315,'teclado','bueno',5,'malo',200,1),(316,'pantalla','regular',1,'dña',100,0),(317,'compurador','bueno',100,'full',100000000,1);
+INSERT INTO `producto` VALUES (312,'computador','buen_estado',5000,_binary 'hd',2,1),(313,'iphone','segunda_mano',1,_binary 'reg',200,0),(314,'telefono','bueno',5005,_binary 'buen',600.6,1),(315,'teclado','bueno',5,_binary 'malo',200,1),(316,'pantalla','regular',1,_binary 'dña',100,0),(317,'compurador','bueno',100,_binary 'full',100000000,1);
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -360,19 +413,18 @@ DROP TABLE IF EXISTS `proveedor`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `proveedor` (
   `idproveedor` int NOT NULL,
-  `idsexo` int NOT NULL,
+  `sexo` int NOT NULL,
   `nit` varchar(45) NOT NULL,
   `nombre` varchar(45) NOT NULL,
-  `dirreccion` varchar(45) NOT NULL,
+  `direccion` varchar(45) NOT NULL,
   `telefono` varchar(45) NOT NULL,
   `correo` varchar(45) NOT NULL,
   `tipo_persona` varchar(45) NOT NULL,
-  `estado` tinyint NOT NULL,
   `fechanacimiento` date NOT NULL,
-  PRIMARY KEY (`idproveedor`),
-  KEY `idsexo_idx` (`idsexo`),
-  KEY `idsexos_idx` (`idsexo`),
-  CONSTRAINT `idsexo_proveedor` FOREIGN KEY (`idsexo`) REFERENCES `sexo` (`idsexo`) ON DELETE CASCADE ON UPDATE CASCADE
+  `estado` tinyint NOT NULL,
+  PRIMARY KEY (`idproveedor`,`sexo`),
+  KEY `sexo_idx` (`sexo`),
+  CONSTRAINT `sexo` FOREIGN KEY (`sexo`) REFERENCES `sexo` (`idsexo`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -382,6 +434,7 @@ CREATE TABLE `proveedor` (
 
 LOCK TABLES `proveedor` WRITE;
 /*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
+INSERT INTO `proveedor` VALUES (123,123,'1','aldo','minercol','4567','@gmail','juridica','2009-12-12',1);
 /*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -443,15 +496,16 @@ DROP TABLE IF EXISTS `usuario`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario` (
   `idUsuario` int NOT NULL,
-  `cargo` int DEFAULT NULL,
-  `sexo` int DEFAULT NULL,
+  `Tipo_de_Documento` varchar(45) NOT NULL,
+  `cargo` varchar(250) DEFAULT NULL,
   `nombre` varchar(250) NOT NULL,
   `telefono` varchar(250) NOT NULL,
   `correo` varchar(100) NOT NULL,
-  `condicion` tinyint NOT NULL,
+  `sexo` varchar(250) DEFAULT NULL,
   `login` varchar(250) NOT NULL,
   `clave` varchar(45) NOT NULL,
   `fechanacimiento` date NOT NULL,
+  `condicion` tinyint NOT NULL,
   PRIMARY KEY (`idUsuario`),
   KEY `idsexos_idx` (`sexo`),
   KEY `idcargo_idx` (`cargo`)
@@ -464,13 +518,59 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (111,NULL,NULL,'wfdg','fsdgf','dgfh',1,'123','123','2009-07-29');
+INSERT INTO `usuario` VALUES (111,'cedula','estudiante','wfdg','fsdgf','dgfh','masculino','123','123','2009-07-29',1),(222,'tarjeta','Aprendiz','aldo','fijo','fuaa@gmail.com','masculino','123','1234','2003-06-10',1);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ventas`
+--
+
+DROP TABLE IF EXISTS `ventas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ventas` (
+  `idVentas` int NOT NULL,
+  `Tipo de pago` varchar(450) NOT NULL,
+  `Nombre del producto` varchar(450) NOT NULL,
+  `Descripicion del producto` int NOT NULL,
+  `Documento del Cliente` int NOT NULL,
+  PRIMARY KEY (`idVentas`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ventas`
+--
+
+LOCK TABLES `ventas` WRITE;
+/*!40000 ALTER TABLE `ventas` DISABLE KEYS */;
+INSERT INTO `ventas` VALUES (14,'efectivo','xiaomi',2,34567),(45,'tarjeta','apple',3,98976);
+/*!40000 ALTER TABLE `ventas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'tienda_com'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `act_usuario` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `act_usuario`(in idusu int, in idcarg int, in idsex int,in nom varchar(250),in telefo int, in corre varchar(45), in dirrec int,in clav varchar(45), in fechanaci date )
+BEGIN
+update usuario set nombre=nom,telefono=telefo,correo=corre,direccion=dirrec,fecha=fechanaci,sexo=idsex,clave=clav where idUsu=ced;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `factura;` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -595,7 +695,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ins_producto`(in nomb varchar(45), in descri varchar(250), in cant int, in imag varchar(45), in prec float)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ins_producto`(in nomb varchar(45), in descri varchar(250), in cant int, in imag longblob, in prec float)
 BEGIN
 insert into producto (nombre,descripcion,cantidad,imagenen,precio, condicion) values (nomb,descri,cant,imag,prec, '1');
 END ;;
@@ -617,6 +717,25 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `ins_prod_fact`(in idpro int, in pro int, in fac int, in cant int, in des float)
 BEGIN
 insert into producto_factura values(idpro,pro,fac,cant,des,'0');
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `ins_ventas` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `ins_ventas`(in idVentas int,in Tipodepago varchar(450),in Nombredelproducto varchar(450),in Descripciondelproducto int,in DocumentodelCliente int)
+BEGIN
+insert into ventas values (idven,tip_pag,nom_prod,descr_produc,docum_clien);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -680,6 +799,42 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `mostrar_factura`
+--
+
+/*!50001 DROP VIEW IF EXISTS `mostrar_factura`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `mostrar_factura` AS select `factura`.`idfactura` AS `idfactura`,`factura`.`fecha` AS `fecha`,`factura`.`idCliente` AS `idCliente`,`factura`.`idUsuario` AS `idUsuario`,`factura`.`tipoPago` AS `tipoPago`,`factura`.`impuestos` AS `impuestos`,`factura`.`total_factura` AS `total_factura` from `factura` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `mostrar_producto`
+--
+
+/*!50001 DROP VIEW IF EXISTS `mostrar_producto`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `mostrar_producto` AS select `producto`.`idProducto` AS `idProducto`,`producto`.`nombre` AS `nombre`,`producto`.`descripcion` AS `descripcion`,`producto`.`cantidad` AS `cantidad`,`producto`.`imagen` AS `imagen`,`producto`.`precio` AS `precio` from `producto` where (`producto`.`condicion` = '1') */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `mostrar_proveedor`
 --
 
@@ -692,7 +847,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `mostrar_proveedor` AS select `proveedor`.`idproveedor` AS `idproveedor`,`proveedor`.`idsexo` AS `idsexo`,`proveedor`.`nit` AS `nit`,`proveedor`.`nombre` AS `nombre`,`proveedor`.`dirreccion` AS `dirreccion`,`proveedor`.`telefono` AS `telefono`,`proveedor`.`correo` AS `correo`,`proveedor`.`tipo_persona` AS `tipo_persona`,`proveedor`.`fechanacimiento` AS `fechanacimiento` from `proveedor` */;
+/*!50001 VIEW `mostrar_proveedor` AS select `proveedor`.`idproveedor` AS `idproveedor`,`sexo`.`nombre` AS `idsexo`,`proveedor`.`nit` AS `nit`,`proveedor`.`nombre` AS `nombre`,`proveedor`.`direccion` AS `direccion`,`proveedor`.`telefono` AS `telefono`,`proveedor`.`correo` AS `correo`,`proveedor`.`tipo_persona` AS `tipo_persona`,`proveedor`.`fechanacimiento` AS `fechanacimiento` from (`proveedor` join `sexo` on((`proveedor`.`sexo` = `sexo`.`idsexo`))) where (`proveedor`.`estado` = '1') */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -734,6 +889,24 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `mostrar_ventas`
+--
+
+/*!50001 DROP VIEW IF EXISTS `mostrar_ventas`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `mostrar_ventas` AS select 'idVentas' AS `idVentas`,'Tipodepago' AS `Tipodepago`,'Nombredelproducto' AS `Nombredelproducto`,'Descripiciondelproducto' AS `Descripiciondelproducto`,'DocumentodelCliente' AS `DocumentodelCliente` from `ventas` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `mostrarusuario`
 --
 
@@ -746,7 +919,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `mostrarusuario` AS select `usuario`.`idUsuario` AS `idusuario`,`usuario`.`cargo` AS `cargo`,`usuario`.`sexo` AS `sexo`,`usuario`.`nombre` AS `nombre`,`usuario`.`telefono` AS `telefono`,`usuario`.`correo` AS `correo`,`usuario`.`condicion` AS `condicion`,`usuario`.`fechanacimiento` AS `fechanacimiento` from `usuario` where (`usuario`.`condicion` = '1') */;
+/*!50001 VIEW `mostrarusuario` AS select `usuario`.`idUsuario` AS `idusuario`,`usuario`.`Tipo_de_Documento` AS `Tipo_de_Documento`,`usuario`.`cargo` AS `cargo`,`usuario`.`sexo` AS `sexo`,`usuario`.`nombre` AS `nombre`,`usuario`.`telefono` AS `telefono`,`usuario`.`correo` AS `correo`,`usuario`.`condicion` AS `condicion`,`usuario`.`fechanacimiento` AS `fechanacimiento` from `usuario` where (`usuario`.`condicion` = '1') */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -760,4 +933,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-26 11:57:47
+-- Dump completed on 2023-11-20 12:43:44
