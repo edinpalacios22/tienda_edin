@@ -4,6 +4,11 @@
  */
 package Vista;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
 /**
  *
  * @author SENA
@@ -16,6 +21,95 @@ public class Factura extends javax.swing.JFrame {
     public Factura() {
         initComponents();
     }
+
+    public JButton getJBTNcancelar() {
+        return JBTNcancelar;
+    }
+
+    public void setJBTNcancelar(JButton JBTNcancelar) {
+        this.JBTNcancelar = JBTNcancelar;
+    }
+
+    public JButton getjBTNguardar() {
+        return jBTNguardar;
+    }
+
+    public void setjBTNguardar(JButton jBTNguardar) {
+        this.jBTNguardar = jBTNguardar;
+    }
+
+    public JComboBox<String> getjCBpago() {
+        return jCBpago;
+    }
+
+    public void setjCBpago(JComboBox<String> jCBpago) {
+        this.jCBpago = jCBpago;
+    }
+
+    public JLabel getLblDescu() {
+        return lblDescu;
+    }
+
+    public void setLblDescu(JLabel lblDescu) {
+        this.lblDescu = lblDescu;
+    }
+
+    public JLabel getLblfactu() {
+        return lblfactu;
+    }
+
+    public void setLblfactu(JLabel lblfactu) {
+        this.lblfactu = lblfactu;
+    }
+
+    public JLabel getLblpago() {
+        return lblpago;
+    }
+
+    public void setLblpago(JLabel lblpago) {
+        this.lblpago = lblpago;
+    }
+
+    public JLabel getLblprove() {
+        return lblprove;
+    }
+
+    public void setLblprove(JLabel lblprove) {
+        this.lblprove = lblprove;
+    }
+
+    public JLabel getLblusuario() {
+        return lblusuario;
+    }
+
+    public void setLblusuario(JLabel lblusuario) {
+        this.lblusuario = lblusuario;
+    }
+
+    public JTextField getTxtDescuento() {
+        return txtDescuento;
+    }
+
+    public void setTxtDescuento(JTextField txtDescuento) {
+        this.txtDescuento = txtDescuento;
+    }
+
+    public JTextField getTxtprove() {
+        return txtprove;
+    }
+
+    public void setTxtprove(JTextField txtprove) {
+        this.txtprove = txtprove;
+    }
+
+    public JTextField getTxtusua() {
+        return txtusua;
+    }
+
+    public void setTxtusua(JTextField txtusua) {
+        this.txtusua = txtusua;
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

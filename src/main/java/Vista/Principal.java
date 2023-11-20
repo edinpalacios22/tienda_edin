@@ -176,6 +176,46 @@ public class Principal extends javax.swing.JFrame {
         this.lblNuevo2 = lblNuevo2;
     }
 
+    public JButton getjBtnfactura() {
+        return jBtnfactura;
+    }
+
+    public void setjBtnfactura(JButton jBtnfactura) {
+        this.jBtnfactura = jBtnfactura;
+    }
+
+    public JButton getBTNGUARDAR() {
+        return BTNGUARDAR;
+    }
+
+    public void setBTNGUARDAR(JButton BTNGUARDAR) {
+        this.BTNGUARDAR = BTNGUARDAR;
+    }
+
+    public JTable getjTablefactura() {
+        return jTablefactura;
+    }
+
+    public void setjTablefactura(JTable jTablefactura) {
+        this.jTablefactura = jTablefactura;
+    }
+
+    public JButton getjBtnVentas() {
+        return jBtnVentas;
+    }
+
+    public void setjBtnVentas(JButton jBtnVentas) {
+        this.jBtnVentas = jBtnVentas;
+    }
+
+    public JTable getJpanelventa() {
+        return jpanelventa;
+    }
+
+    public void setJpanelventa(JTable jpanelventa) {
+        this.jpanelventa = jpanelventa;
+    }
+
 
 
     /**
@@ -217,7 +257,7 @@ public class Principal extends javax.swing.JFrame {
         txtcomprobante = new javax.swing.JTextField();
         txtVacio = new javax.swing.JTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        jTablefactura = new javax.swing.JTable();
         BTNGUARDAR = new javax.swing.JButton();
         btnbuscar = new javax.swing.JButton();
         btnlupa = new javax.swing.JButton();
@@ -407,7 +447,7 @@ public class Principal extends javax.swing.JFrame {
 
         jcbxpago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "seleccione..." }));
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        jTablefactura.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -418,7 +458,7 @@ public class Principal extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane4.setViewportView(jTable3);
+        jScrollPane4.setViewportView(jTablefactura);
 
         BTNGUARDAR.setIcon(new javax.swing.ImageIcon("C:\\Users\\SENA\\Documents\\NetBeansProjects\\Tienda_Com\\src\\main\\resources\\img\\salvar.png")); // NOI18N
         BTNGUARDAR.setText("GUARDAR");
@@ -693,7 +733,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
+    private javax.swing.JTable jTablefactura;
     private javax.swing.JComboBox<String> jcbxpago;
     private javax.swing.JTabbedPane jdprincipal;
     private javax.swing.JPanel jpUsuario;

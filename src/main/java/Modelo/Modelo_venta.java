@@ -1,9 +1,10 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package Modelo;
 
 import Controlador.Conexion;
-import Controlador.ControladorPrincipal;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -19,15 +20,19 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
-public class Modelocliente {
-
-    Conexion cone = new Conexion();
-    Connection cn = cone.iniciarConexion();
-
-    private int doc, sex, rol;
-    private String nom, dir, tec, cor, lo, cl;
-    private Date fec;
+/**
+ *
+ * @author SENA
+ */
+public class Modelo_venta {
+     Conexion cone = new Conexion();
+        Connection cn = cone.iniciarConexion();
+        
+         private int doc, sex, rol;
+        private String nom, dir, tec, cor, lo, cl;
+        private Date fec;
 
     public Conexion getCone() {
         return cone;
@@ -124,25 +129,23 @@ public class Modelocliente {
     public void setFec(Date fec) {
         this.fec = fec;
     }
+        
+     public Map<String, Integer> llenarCombo() {
+            String sql = "Select * from mostrar sexo";
+            Map<String, Integer> llenar_combo = new HashMap<>();
+            try {
+                Statement st = cn.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                while (rs.next()) {
+                    llenar_combo.put(rs.getString(2), rs.getInt(1));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
 
-    public Map<String, Integer> llenarCombo() {
-        String sql = "Select * from mostrar sexo";
-        Map<String, Integer> llenar_combo = new HashMap<>();
-        try {
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                llenar_combo.put(rs.getString(2), rs.getInt(1));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-
+            return llenar_combo;
         }
-        return llenar_combo;
-    }
-    
-    
-    public void mostrarTablaCliente(JTable tabla, String valor, String nomPesta) {
+     public void mostrarTablaventa(JTable tabla, String valor, String nomPesta) {
 
         Conexion conect = new Conexion();
         Connection co = conect.iniciarConexion();
@@ -162,9 +165,9 @@ public class Modelocliente {
         eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png")));
         agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar-usuario.png")));
 
-        String[] titulo = {"Documento", "Idsexo","Nombre", "Telefono", "Correo", "Direccion","condicion","Fecha de Nacimiento"};
+        String[] titulo = {"idVentas","Tipodepago","Nombredelproducto","Descripciondelproducto","Documentodelcliente"};
         int total = titulo.length;
-        if (nomPesta.equals("Cliente")) {
+        if (nomPesta.equals("venta")) {
             titulo = Arrays.copyOf(titulo, titulo.length + 2);
             titulo[titulo.length - 2] = "";
             titulo[titulo.length - 1] = "";
@@ -173,7 +176,7 @@ public class Modelocliente {
             titulo[titulo.length - 1] = "";
         }
 
-        DefaultTableModel tablaCliente = new DefaultTableModel(null, titulo) {
+        DefaultTableModel tablaventa = new DefaultTableModel(null, titulo) {
             public boolean isCellEditable(int row, int column) {
 
                 return false;
@@ -181,22 +184,23 @@ public class Modelocliente {
             }
         };
 
-        String sqlcliente;
+        String sqlventas;
         if (valor.equals("")) {
-            sqlcliente = "SELECT * FROM mostrar_cliente";
+            sqlventas = "SELECT * FROM mostrar_ventas";
         } else {
-            sqlcliente = "call consultar_cliente('" + valor + "')";
+            sqlventas = "call consultar_factura('" + valor + "')";
         }
+        
         try {
             String[] dato = new String[titulo.length];
             Statement st = cn.createStatement(); //Crea una consulta
-            ResultSet rs = st.executeQuery(sqlcliente);
+            ResultSet rs = st.executeQuery(sqlventas);
             while (rs.next()) {
                 for (int i = 0; i < total; i++) {
                     dato[i] = rs.getString(i + 1);
                 }
-                Object[] fila = {dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6],dato[7],editar,eliminar};
-                if (nomPesta.equals("cliente")) {
+                Object[] fila = {dato[0], dato[1], dato[2], dato[3], dato[4],editar,eliminar};
+                if (nomPesta.equals("ventas")) {
                     fila = Arrays.copyOf(fila, fila.length + 2);
                     fila[fila.length - 2] = editar;
                     fila[fila.length - 1] = eliminar;
@@ -204,14 +208,14 @@ public class Modelocliente {
                     fila= Arrays.copyOf(fila, fila.length+1);
                     fila[fila.length - 1] = agregar;
                 }
-                tablaCliente.addRow(fila);
+                tablaventa.addRow(fila);
             }
             co.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        tabla.setModel(tablaCliente);
+        tabla.setModel(tablaventa);
         //Darle Tamaño a cada Columna
         int cantColum = tabla.getColumnCount();
         int[] ancho = {100, 180, 100, 150, 100, 160, 100, 150,30,30};
@@ -221,43 +225,30 @@ public class Modelocliente {
         }
         conect.cerrarConexion();
     }
+     public void llenarventa() throws SQLException {
+            Conexion cone = new Conexion();
+            Connection cn = cone.iniciarConexion();//instanciamos la conexion
+            String sql = "call ins_usuario (?,?,?,?,?,?)";
 
-    public void llenarnuevoCliente() {
-        Conexion cone = new Conexion();
-        Connection cn = cone.iniciarConexion();//instanciamos la conexion
-        String sql = "call ins_cliente (?,?,?,?,?,?,?,)";
-        try {
-            PreparedStatement ps = cn.prepareStatement(sql);
-            ps.setInt(1, getDoc());
-            ps.setString(2, getNom());
-            ps.setString(3, getTec());
-            ps.setString(4, getCor());
-            ps.setString(5, getDir());
-            ps.setInt(6, getSex());
-            ps.executeUpdate();
-            JOptionPane.showConfirmDialog(null, "registro finalizado");
-            cn.close();
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, getDoc());
+                ps.setString(2, getNom());
+                ps.setString(3, getTec());
+                ps.setString(4, getCor());
+                ps.setString(5, getDir());
+                ps.setInt(6, getSex());
+                ps.executeUpdate();
+                JOptionPane.showConfirmDialog(null, "registro finalizado");
+                cn.close();
 
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al guardar", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error al guardar", "Error", JOptionPane.ERROR_MESSAGE);
 
+            }
+            cone.cerrarConexion();
         }
-        cone.cerrarConexion();
-    }
 
-    public void setDefaultCloseOperation(int DISPOSE_ON_CLOSE) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
-    public void addWindowListener(WindowAdapter windowAdapter) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    public void windowClosed(WindowEvent e) {
-        ControladorPrincipal princi = new ControladorPrincipal();
-        princi.iniciarPrincipal(0);
-   
-    }
-}
-
-
+    
 

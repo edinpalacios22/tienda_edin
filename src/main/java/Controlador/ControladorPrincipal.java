@@ -2,12 +2,17 @@ package Controlador;
 
 // import Modelo.ModeloUsuario;
 import Modelo.ModeloUsuario;
+import Modelo.Modelo_Factura;
+import Modelo.Modelo_venta;
 import Modelo.Modelocliente;
+import Modelo.Modeloproveedor;
 import Modelo.modelo_producto;
+import Vista.Factura;
 import Vista.Nuevo_Cliente;
 import Vista.Nuevo_usuario;
 import Vista.Proveedor;
 import Vista.Principal;
+import Vista.Ventas;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -37,6 +42,11 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
     Nuevo_usuario us = new Nuevo_usuario();
     modelo_producto modpro = new modelo_producto();
     Modelocliente modclien = new  Modelocliente();
+    Modeloproveedor modprove = new Modeloproveedor();
+    Factura fac = new Factura ();
+    Modelo_Factura modfac = new Modelo_Factura();
+    Ventas ven = new Ventas();
+    Modelo_venta modvent = new Modelo_venta();
 
     public ControladorPrincipal() {
         prin.getLblnuevo().addActionListener(this);
@@ -45,6 +55,9 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
         prin.getBtnimg().addActionListener(this);
         prin.getBtnguardar().addActionListener(this);
         prin.getLblNuevo2().addActionListener(this);
+        prin.getjBproveedorp().addActionListener(this);
+        prin.getjBtnfactura().addActionListener(this);
+        prin.getjBtnVentas().addActionListener(this);
         
         prin.getJdprincipal().addChangeListener(this);
         
@@ -53,6 +66,8 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
         us.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         nue.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         nuev.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        fac.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        ven.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 //        prin.getJdprincipal().addChangeListener(this);
     }
 
@@ -73,9 +88,17 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
         }
 
         if (prin.getJdprincipal().getSelectedIndex() == 4) {
-//            gestionarFactura();
+            gestionFactura();
 
         }
+        
+        if (prin.getJdprincipal().getSelectedIndex() == 3) {
+            gestionproveedor();
+        }
+        if (prin.getJdprincipal().getSelectedIndex() == 5) {
+            gestionVenta();
+        }
+        
     }
 
     @Override
@@ -94,6 +117,15 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
             con.llenarproveedor();
 
         }
+        
+        if (e.getSource().equals(prin.getjBtnfactura())) {
+            Controlador_Factura con = new Controlador_Factura();
+            con.llenarFactura();
+        }
+        if (e.getSource().equals(prin.getjBtnVentas())) {
+            Controlador_Ventas con = new Controlador_Ventas();
+            con.llenarventa();
+        }
         if (e.getSource().equals(prin.getLblnuevo())) {
             
         }
@@ -105,8 +137,8 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
         }
         if (e.getSource().equals(prin.getBtnimg())) {
             modpro.setNom(prin.getTxtnombre().getText());
-            modpro.setDes(prin.getTxtPanel1().getText());
-            modpro.setImagen(modpro.convertirImagen(modpro.getRuta()));
+//            modpro.setDes(prin.getTxtPanel1().getText());
+//            modpro.setImagen(modpro.convertirImagen(modpro.getRuta()));
         }
     }
 
@@ -141,7 +173,20 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
     
     public void gestioncliente() {
         modclien.mostrarTablaCliente(prin.getJpanelcliente(), "", "cliente");
-    }     
+    }
+    
+    public void gestionproveedor() {
+        modprove.mostrarTablaProveedor(prin.getJpanelproveedor(), "", "proveedor");
+    }
+    
+    public void gestionfactura() {
+        modfac.mostrarTablafactura(prin.getjTablefactura(), "", "factura");
+    }
+    
+    public void gestionVenta() {
+       modvent.mostrarTablaventa(prin.getJpanelventa(), "", "venta");
+
+    }
 
       
 // @Override
@@ -158,6 +203,17 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
         if (e.getSource().equals(prin.getjBproveedorp())) {
             Controlador_proveedor con = new Controlador_proveedor();
             con.llenarproveedor();
+        }
+        
+            
+         if (e.getSource().equals(prin.getjBtnfactura())) {
+            Controlador_Factura con = new Controlador_Factura();
+            con.llenarFactura();
+            
+//         if (e.getSource().equals(prin.getjBtnVentas())) {
+//             Controlador_Ventas con = new Controlador_Ventas();
+//             con.llenarVentas();
+//         }
 
         }
         if (e.getSource().equals(prin.getLblnuevo())) {
@@ -175,7 +231,10 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
             modpro.setDes(prin.getTxtPanel1().getText());
             modpro.setImagen(modpro.convertirImagen(modpro.getRuta()));
         }
-    }
+    }   
+
+    
+        
          public void limpiar(Component[] panel) {
         for (Object control : panel) {
             if (control instanceof JTextField) {
@@ -200,9 +259,19 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
         int seleccion = prin.getJdprincipal().getSelectedIndex();
         if (seleccion == 1) {
             
-            
         if (seleccion == 1) {
             gestioncliente();
+        }
+        if (seleccion == 1) {
+            gestionfactura();
+        }
+        
+        if  (seleccion == 1) {
+            gestionproveedor();
+        }
+        
+        if (seleccion == 1) {
+            gestionVenta();
         }
 
        
@@ -237,6 +306,9 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
     public void insertUpdate(DocumentEvent e) {
         modusu.mostrarTablaUsuario(prin.getJtusua(), prin.getTXTbuscar().getText(), "usuario");
         modclien.mostrarTablaCliente(prin.getJpanelcliente(), "", "cliente");
+        modprove.mostrarTablaProveedor(prin.getJpanelproveedor(), "", "proveedor");
+        modfac.mostrarTablafactura(prin.getjTablefactura(), "", "factura");
+        modvent.mostrarTablaventa(prin.getJpanelventa(), "", "venta");
     }
 
     @Override
@@ -253,6 +325,10 @@ public class ControladorPrincipal implements ActionListener, ChangeListener, Doc
 //    @Override
 //    public void stateChanged(ChangeEvent e) {
 //        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+    private void gestionFactura() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     }
 
 

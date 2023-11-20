@@ -18,10 +18,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 public class Modeloproveedor {
 
-    public class Modelocliente {
 
         Conexion cone = new Conexion();
         Connection cn = cone.iniciarConexion();
@@ -141,7 +141,7 @@ public class Modeloproveedor {
             }
             return llenar_combo;
         }
-public void mostrarTablaProveedor(JTable tabla, String valor, String nomPesta) {
+        public void mostrarTablaProveedor(JTable tabla, String valor, String nomPesta) {
 
         Conexion conect = new Conexion();
         Connection co = conect.iniciarConexion();
@@ -161,7 +161,7 @@ public void mostrarTablaProveedor(JTable tabla, String valor, String nomPesta) {
         eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png")));
         agregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar-usuario.png")));
 
-        String[] titulo = {"Documento", "Idsexo","Nombre", "Telefono", "Correo", "Direccion","condicion","Fecha de Nacimiento"};
+        String[] titulo = {"Documento","Idsexo","Nit","Nombre","Direccion","Telefono","Correo","Tipo_persona","Fechanacimiento"};
         int total = titulo.length;
         if (nomPesta.equals("proveedor")) {
             titulo = Arrays.copyOf(titulo, titulo.length + 2);
@@ -172,7 +172,7 @@ public void mostrarTablaProveedor(JTable tabla, String valor, String nomPesta) {
             titulo[titulo.length - 1] = "";
         }
 
-        DefaultTableModel tablaProveedor = new DefaultTableModel(null, titulo) {
+        DefaultTableModel tablaproveedor = new DefaultTableModel(null, titulo) {
             public boolean isCellEditable(int row, int column) {
 
                 return false;
@@ -194,8 +194,8 @@ public void mostrarTablaProveedor(JTable tabla, String valor, String nomPesta) {
                 for (int i = 0; i < total; i++) {
                     dato[i] = rs.getString(i + 1);
                 }
-                Object[] fila = {dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7],editar,eliminar};
-                if (nomPesta.equals("cliente")) {
+                Object[] fila = {dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6],dato[7],dato[8],editar,eliminar};
+                if (nomPesta.equals("proveedor")) {
                     fila = Arrays.copyOf(fila, fila.length + 2);
                     fila[fila.length - 2] = editar;
                     fila[fila.length - 1] = eliminar;
@@ -203,23 +203,24 @@ public void mostrarTablaProveedor(JTable tabla, String valor, String nomPesta) {
                     fila= Arrays.copyOf(fila, fila.length+1);
                     fila[fila.length - 1] = agregar;
                 }
-                tablaProveedor.addRow(fila);
+                tablaproveedor.addRow(fila);
             }
             co.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        tabla.setModel(tablaProveedor);
+        tabla.setModel(tablaproveedor);
         //Darle Tamaño a cada Columna
         int cantColum = tabla.getColumnCount();
-        int[] ancho = {100, 180, 100, 150, 100, 160, 100, 150,30,30};
+        int[] ancho = {100, 180, 100, 150, 100, 160, 100,30,30};
         for (int i = 0; i < cantColum; i++) {
             TableColumn columna = tabla.getColumnModel().getColumn(i);
             columna.setPreferredWidth(ancho[i]);
         }
         conect.cerrarConexion();
     }
+    
 
         public void llenarproveedor() throws SQLException {
             Conexion cone = new Conexion();
@@ -247,12 +248,13 @@ public void mostrarTablaProveedor(JTable tabla, String valor, String nomPesta) {
 
     }
 
-    public Map<String, Integer> llenarCombo(String sexo) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-public void windowClosed(WindowEvent e) {
-        ControladorPrincipal princi = new ControladorPrincipal();
-        princi.iniciarPrincipal(0);
-   
-    }
-}
+//    public Map<String, Integer> llenarCombo(String sexo) {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
+//public void windowClosed(WindowEvent e) {
+//        ControladorPrincipal princi = new ControladorPrincipal();
+//        princi.iniciarPrincipal(0);
+//   
+//    }
+
+
